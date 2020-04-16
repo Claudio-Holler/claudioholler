@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ClaudiohollerApplication {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(ClaudiohollerApplication.class, args);
 	}
 
