@@ -19,10 +19,8 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET) //REST - http GET
 	public ResponseEntity<?> find(@PathVariable Integer id){
-		System.out.println("TESTE 1");
 		Categoria obj = service.buscar(id);
 		
-		System.out.println("TESTE 2");
 		return ResponseEntity.ok().body(obj);
 		//Categoria cat1 = new Categoria(1, "Informatica");
 		//Categoria cat2 = new Categoria(2, "Escritorio");

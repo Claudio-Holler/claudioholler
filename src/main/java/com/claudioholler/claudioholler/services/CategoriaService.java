@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.claudioholler.claudioholler.domain.Categoria;
 import com.claudioholler.claudioholler.respositories.CategoriaRespository;
+import com.claudioholler.claudioholler.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -15,8 +16,12 @@ public class CategoriaService {
 	private CategoriaRespository repo;
 	
 	public Categoria buscar(Integer Id){
-		System.out.println("TESTE 3");
 		Optional<Categoria> obj = repo.findById(Id);
+		if (obj == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado! "+ Id
+					+ "Tipo "+ Categoria.class.getName());
+			
+		}
 		return obj.orElse(null);
 		
 		
