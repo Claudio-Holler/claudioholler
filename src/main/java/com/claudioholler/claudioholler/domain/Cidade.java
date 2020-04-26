@@ -16,13 +16,11 @@ public class Cidade implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)//geracao automatica chaveq
 	private Integer Id;
 	private String nome;
-	
 	@ManyToOne
 	@JoinColumn(name="estado_id")
 	private Estado estado;
 	
 	public Cidade(){
-		
 	}
 
 	public Cidade(Integer id, String nome, Estado estado) {

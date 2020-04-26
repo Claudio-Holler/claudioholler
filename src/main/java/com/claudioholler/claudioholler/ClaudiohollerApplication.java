@@ -1,5 +1,7 @@
 package com.claudioholler.claudioholler;
 
+
+
 import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -8,24 +10,33 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.claudioholler.claudioholler.domain.Categoria;
 import com.claudioholler.claudioholler.domain.Cidade;
+import com.claudioholler.claudioholler.domain.Cliente;
+import com.claudioholler.claudioholler.domain.Endereco;
 import com.claudioholler.claudioholler.domain.Estado;
 import com.claudioholler.claudioholler.domain.Produto;
-import com.claudioholler.claudioholler.respositories.CategoriaRespository;
-import com.claudioholler.claudioholler.respositories.CidadeRespository;
-import com.claudioholler.claudioholler.respositories.EstadoRespository;
-import com.claudioholler.claudioholler.respositories.ProdutoRespository;
+import com.claudioholler.claudioholler.domain.enums.TipoCliente;
+import com.claudioholler.claudioholler.respositories.CategoriaRepository;
+import com.claudioholler.claudioholler.respositories.CidadeRepository;
+import com.claudioholler.claudioholler.respositories.ClienteRepository;
+import com.claudioholler.claudioholler.respositories.EnderecoRepository;
+import com.claudioholler.claudioholler.respositories.EstadoRepository;
+import com.claudioholler.claudioholler.respositories.ProdutoRepository;
 
 @SpringBootApplication
 public class ClaudiohollerApplication implements CommandLineRunner {
 
 	@Autowired //instanciar automaticamente no sprinboot
-	private CategoriaRespository categoriaRepository;
+	private CategoriaRepository categoriaRepository;
 	@Autowired 
-	private ProdutoRespository produtoRepository;
+	private ProdutoRepository produtoRepository;
 	@Autowired 
-	private EstadoRespository estadoRepository;
+	private EstadoRepository estadoRepository;
 	@Autowired 
-	private CidadeRespository cidadeRepository;
+	private CidadeRepository cidadeRepository;
+	@Autowired 
+	private ClienteRepository clienteRepository;
+	@Autowired 
+	private EnderecoRepository enderecoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -75,6 +86,23 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 		cidadeRepository.save(c1);
 		cidadeRepository.save(c2);
 		cidadeRepository.save(c3);
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva","maria@gmail.com", "123456456", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().add("123456");
+		cli1.getTelefones().add("12345612132");
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "3843543", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "3888888", cli1, c2);
+		
+		cli1.getEnderecos().add(e1);
+		cli1.getEnderecos().add(e2);
+		//para salvar os clientes no banco de dados temos que fazer os repositoryes e criar as dependencias aqui
+		
+		clienteRepository.save(cli1);
+		enderecoRepository.save(e1);
+		enderecoRepository.save(e2);
+		
+		
 	}
 
 }
