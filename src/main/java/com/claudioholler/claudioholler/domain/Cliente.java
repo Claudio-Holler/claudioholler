@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.claudioholler.claudioholler.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Cliente implements Serializable {
@@ -27,8 +28,8 @@ public class Cliente implements Serializable {
 	private String cpOuCnpj;
 	private Integer tipo;
 	
-	//um cliente pode ter vários endereços.
-	@OneToMany(mappedBy="cliente")
+	@JsonManagedReference//ou seja Cliente pode referenciar Endereco
+	@OneToMany(mappedBy="cliente")//um cliente pode ter vários endereços.
 	private List<Endereco> enderecos  = new ArrayList<>(); 
 	
 	@ElementCollection
