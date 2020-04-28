@@ -2,7 +2,8 @@ package com.claudioholler.claudioholler;
 
 
 
-import org.assertj.core.util.Arrays;
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,13 +14,20 @@ import com.claudioholler.claudioholler.domain.Cidade;
 import com.claudioholler.claudioholler.domain.Cliente;
 import com.claudioholler.claudioholler.domain.Endereco;
 import com.claudioholler.claudioholler.domain.Estado;
+import com.claudioholler.claudioholler.domain.Pagamento;
+import com.claudioholler.claudioholler.domain.PagamentoComBoleto;
+import com.claudioholler.claudioholler.domain.PagamentoComCartao;
+import com.claudioholler.claudioholler.domain.Pedido;
 import com.claudioholler.claudioholler.domain.Produto;
+import com.claudioholler.claudioholler.domain.enums.EstadoPagamento;
 import com.claudioholler.claudioholler.domain.enums.TipoCliente;
 import com.claudioholler.claudioholler.respositories.CategoriaRepository;
 import com.claudioholler.claudioholler.respositories.CidadeRepository;
 import com.claudioholler.claudioholler.respositories.ClienteRepository;
 import com.claudioholler.claudioholler.respositories.EnderecoRepository;
 import com.claudioholler.claudioholler.respositories.EstadoRepository;
+import com.claudioholler.claudioholler.respositories.PagamentoRepository;
+import com.claudioholler.claudioholler.respositories.PedidoRepository;
 import com.claudioholler.claudioholler.respositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -37,6 +45,10 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 	private ClienteRepository clienteRepository;
 	@Autowired 
 	private EnderecoRepository enderecoRepository;
+	@Autowired 
+	private PedidoRepository pedidoRepository;
+	@Autowired 
+	private PagamentoRepository pagamentoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -102,7 +114,23 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 		enderecoRepository.save(e1);
 		enderecoRepository.save(e2);
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:32"), cli1, e2);
 		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().add(ped1);
+		cli1.getPedidos().add(ped2);
+		
+		pedidoRepository.save(ped1);
+		pedidoRepository.save(ped2);
+		pagamentoRepository.save(pagto1);
+		pagamentoRepository.save(pagto2);
 	}
 
 }
