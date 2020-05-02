@@ -14,6 +14,7 @@ import com.claudioholler.claudioholler.domain.Cidade;
 import com.claudioholler.claudioholler.domain.Cliente;
 import com.claudioholler.claudioholler.domain.Endereco;
 import com.claudioholler.claudioholler.domain.Estado;
+import com.claudioholler.claudioholler.domain.ItemPedido;
 import com.claudioholler.claudioholler.domain.Pagamento;
 import com.claudioholler.claudioholler.domain.PagamentoComBoleto;
 import com.claudioholler.claudioholler.domain.PagamentoComCartao;
@@ -26,6 +27,7 @@ import com.claudioholler.claudioholler.respositories.CidadeRepository;
 import com.claudioholler.claudioholler.respositories.ClienteRepository;
 import com.claudioholler.claudioholler.respositories.EnderecoRepository;
 import com.claudioholler.claudioholler.respositories.EstadoRepository;
+import com.claudioholler.claudioholler.respositories.ItemPedidoRepository;
 import com.claudioholler.claudioholler.respositories.PagamentoRepository;
 import com.claudioholler.claudioholler.respositories.PedidoRepository;
 import com.claudioholler.claudioholler.respositories.ProdutoRepository;
@@ -49,6 +51,8 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired 
 	private PagamentoRepository pagamentoRepository;
+	@Autowired 
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -131,6 +135,26 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 		pedidoRepository.save(ped2);
 		pagamentoRepository.save(pagto1);
 		pagamentoRepository.save(pagto2);
+		
+		ItemPedido it1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido it2 = new ItemPedido(ped1, p2, 0.00, 2, 80.00);
+		ItemPedido it3 = new ItemPedido(ped2, p2, 100.00, 2, 800.00);
+		
+		ped1.getItens().add(it1);
+		//ped1.getItens().addAll((Arrays.asList(it1));
+		ped1.getItens().add(it2);
+		ped2.getItens().add(it3);
+		
+		p1.getItens().add(it1);
+		p2.getItens().add(it3);
+		p3.getItens().add(it2);
+		
+		itemPedidoRepository.save(it1);
+		itemPedidoRepository.save(it2);
+		itemPedidoRepository.save(it3);
+		
+		
 	}
+	
 
 }
