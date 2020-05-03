@@ -18,7 +18,7 @@ public class Cidade implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)//geracao automatica chaveq
 	private Integer Id;
 	private String nome;
-	@JsonManagedReference
+	//@JsonManagedReference--tirado fora
 	@ManyToOne
 	@JoinColumn(name="estado_id")
 	private Estado estado;
