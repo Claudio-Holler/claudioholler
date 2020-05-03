@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import org.springframework.objenesis.instantiator.annotations.Instantiator;
 
 import com.claudioholler.claudioholler.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -25,6 +26,7 @@ public abstract class Pagamento implements Serializable {//Classe abstrata para 
 	private Integer Id;
 	private Integer estado;
 	
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name="pedido_id")
 	@MapsId
