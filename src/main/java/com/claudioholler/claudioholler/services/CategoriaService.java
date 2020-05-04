@@ -15,7 +15,7 @@ public class CategoriaService {
 	@Autowired//instancia automaticamente o objeto abaixo no Spring Boot
 	private CategoriaRepository repo;
 	
-	public Categoria buscar(Integer Id){
+	public Categoria find(Integer Id){
 		Optional<Categoria> obj = repo.findById(Id);
 		/*if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado! "+ Id
@@ -29,6 +29,11 @@ public class CategoriaService {
 	}
 	
 	public Categoria insert(Categoria obj){
+		return repo.save(obj);
+	}
+	
+	public Categoria update(Categoria obj){
+		find(obj.getId());
 		return repo.save(obj);
 	}
 }
