@@ -3,10 +3,12 @@ package com.claudioholler.claudioholler.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.claudioholler.claudioholler.domain.Categoria;
 import com.claudioholler.claudioholler.respositories.CategoriaRepository;
+import com.claudioholler.claudioholler.services.exceptions.DataIntegrityException;
 import com.claudioholler.claudioholler.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -35,5 +37,16 @@ public class CategoriaService {
 	public Categoria update(Categoria obj){
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer Id){
+		find(Id);
+		try{
+			repo.deleteById(Id);	
+		}catch (DataIntegrityViolationException e){
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que tenha produtos");
+			
+		}
+		
 	}
 }
