@@ -2,15 +2,16 @@ package com.claudioholler.claudioholler.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -70,6 +71,20 @@ public class CategoriaResource {
 		List<Categoria> lista = service.retornaTodasCategorias();
 		//percorrer uma lista usando o stream do java 8
 		List<CategoriaDto> listDto = lista.stream().map(obj -> new CategoriaDto(obj)).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value="page", method=RequestMethod.GET) //REST - http GET
+	public ResponseEntity<Page<CategoriaDto>> acharPagina(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
+			@RequestParam(value="direction", defaultValue="ASC") String direction)
+	{
+		Page<Categoria> lista = service.findPage(page, linesPerPage, orderBy, direction);
+		//percorrer uma lista usando o stream do java 8
+		Page<CategoriaDto> listDto = lista.map(obj -> new CategoriaDto(obj));
 		
 		return ResponseEntity.ok().body(listDto);
 	}

@@ -64,6 +64,11 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 		
 		Categoria cat1 = new Categoria(null, "Informatica");
 		Categoria cat2 = new Categoria(null, "Escritorio");
+		Categoria cat3 = new Categoria(null, "Cama mesa e banho");
+		Categoria cat4 = new Categoria(null, "Eletronico");
+		Categoria cat5 = new Categoria(null, "Indigenea");
+		Categoria cat6 = new Categoria(null, "Decoração");
+		Categoria cat7 = new Categoria(null, "Fumaria");
 		
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
@@ -81,6 +86,12 @@ public class ClaudiohollerApplication implements CommandLineRunner {
 		
 		categoriaRepository.save(cat1);
 		categoriaRepository.save(cat2);
+		categoriaRepository.save(cat3);
+		categoriaRepository.save(cat4);
+		categoriaRepository.save(cat5);
+		categoriaRepository.save(cat6);
+		categoriaRepository.save(cat7);
+		
 		produtoRepository.save(p1);
 		produtoRepository.save(p2);
 		produtoRepository.save(p3);
