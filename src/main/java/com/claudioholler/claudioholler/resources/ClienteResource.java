@@ -1,5 +1,6 @@
 package com.claudioholler.claudioholler.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.claudioholler.claudioholler.domain.Cliente;
 import com.claudioholler.claudioholler.dto.ClienteDto;
+import com.claudioholler.claudioholler.dto.ClienteNewDto;
 import com.claudioholler.claudioholler.services.ClienteService;
 
 @RestController
@@ -42,21 +45,6 @@ public class ClienteResource {
 	    //return lista;
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDto objDto, @PathVariable Integer id){
-		Cliente obj = service.fromDTO(objDto);
-		obj = service.update(obj);
-		return ResponseEntity.noContent().build();
-		
-	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@RequestBody Cliente obj, @PathVariable Integer id){
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-		
-	}
-	
 	@RequestMapping(method=RequestMethod.GET) //REST - http GET
 	public ResponseEntity<List<ClienteDto>> findAll(){
 		List<Cliente> lista = service.retornaTodasClientes();
@@ -78,6 +66,39 @@ public class ClienteResource {
 		Page<ClienteDto> listDto = lista.map(obj -> new ClienteDto(obj));
 		
 		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDto objDto, @PathVariable Integer id){
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@RequestBody Cliente obj, @PathVariable Integer id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	
+	
+	
+	
+	@RequestMapping(method=RequestMethod.POST)
+	//observacoes @Valid para fazer as validacoes do dto como tamanho e not null la definidas
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDto objDto){
+		Cliente obj = service.fromDTO(objDto);
+		System.out.print("TESTE00 Insert Cliente::::"+obj.getId());
+		obj = service.insert(obj);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("{/id}").buildAndExpand(obj.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
+		
 	}
 
 }
